@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "charsi"
+version = "0.1.0"
+description = "A command-line tool to help game modders build string resources for Diablo II: Resurrected."
+authors = ["Garrett HE <garrett.he@hotmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+homepage = "https://github.com/garrett-he/charsi"
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.12"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
