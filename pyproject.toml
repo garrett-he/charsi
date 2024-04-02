@@ -6,6 +6,7 @@ authors = ["Garrett HE <garrett.he@hotmail.com>"]
 license = "GPL-3.0"
 readme = "README.md"
 homepage = "https://github.com/garrett-he/charsi"
+packages = [{include = "charsi", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.12"
