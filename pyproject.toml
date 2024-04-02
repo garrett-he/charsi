@@ -10,6 +10,7 @@ packages = [{include = "charsi", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.12"
+click = "^8.1.3"
 
 [build-system]
 requires = ["poetry-core"]
