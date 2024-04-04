@@ -21,6 +21,9 @@ pytest-mock = "^3.10.0"
 [tool.poetry.scripts]
 charsi = "charsi.__main__:cli"
 
+[tool.poe.tasks]
+test = "poetry run pytest --cov=src --cov-report=term-missing"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
