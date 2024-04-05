@@ -1,0 +1,34 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: double-quote-string-fixer
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: fix-encoding-pragma
+        args: [ '--remove' ]
+      - id: mixed-line-ending
+        args: [ '--fix', 'lf' ]
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest
+        language: system
+        always_run: true
+        pass_filenames: false
+
+      - id: pylint
+        name: pylint
+        entry: poetry run pylint src/
+        language: system
+        always_run: true
+        pass_filenames: false
