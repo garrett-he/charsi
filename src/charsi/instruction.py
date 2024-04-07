@@ -75,3 +75,11 @@ class InstructionConflictError(_InstructionError):
 
 class InstructionUndefinedError(_InstructionError):
     ...
+
+
+def replace_text_handler(_, *args):
+    return args[0].replace('\\n', '\n')
+
+
+InstructionInvoker.default = InstructionInvoker()
+InstructionInvoker.default.register('Text', replace_text_handler)

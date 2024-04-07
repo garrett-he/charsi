@@ -47,3 +47,11 @@ def test_instruction_invoker():
 
     invoker.register('TestInstruction', handler)
     assert invoker.invoke(inst, 'TestString') == 'TestString:arg1_arg2'
+
+
+def test_default_instruction_invoker():
+    invoker = InstructionInvoker.default
+
+    inst = parse('Text[query]: text-replaced')
+    result = invoker.invoke(inst, 'origin-text')
+    assert result == 'text-replaced'
