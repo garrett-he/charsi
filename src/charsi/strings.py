@@ -1,6 +1,28 @@
 from __future__ import annotations
 import json
+from enum import Enum
 from typing import List, Dict, TypedDict, IO
+
+
+# pylint: disable=invalid-name
+class LanguageTag(Enum):
+    enUS = 'enUS'
+    zhTW = 'zhTW'
+    deDE = 'deDE'
+    esES = 'esES'
+    frFR = 'frFR'
+    itIT = 'itIT'
+    koKR = 'koKR'
+    plPL = 'plPL'
+    esMX = 'esMX'
+    jaJP = 'jaJP'
+    ptBR = 'ptBR'
+    ruRU = 'ruRU'
+    zhCN = 'zhCN'
+
+    @staticmethod
+    def tags() -> List[str]:
+        return [tag.value for tag in LanguageTag]
 
 
 class StringItem(TypedDict):
