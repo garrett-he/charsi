@@ -71,3 +71,6 @@ class StringTable:
             raise IndexError(key)
 
         return self.items[self._item_indices[key]]
+
+    def dump(self, fp: IO):
+        json.dump(self.items, fp, ensure_ascii=False, indent=2)

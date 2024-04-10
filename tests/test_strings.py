@@ -49,3 +49,21 @@ def test_stringtable_find(presence_states: Path):
         tbl.find('nonExists')
 
     assert str(e.value) == 'nonExists'
+
+
+def test_stringtable_dump(presence_states: Path):
+    tbl = StringTable()
+    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+
+    tmpfile = tempfile.mktemp()
+
+    with open(tmpfile, 'w', encoding='utf-8-sig') as fp:
+        tbl.dump(fp)
+
+    with open(tmpfile, 'r', encoding='utf-8-sig') as fp:
+        tmp_tbl = StringTable()
+        tmp_tbl.read(fp)
+
+    assert len(tbl.items) == 16
+    assert tbl.items[0]['id'] == 26047
+    assert tbl.items[0]['Key'] == 'presenceMenus'
