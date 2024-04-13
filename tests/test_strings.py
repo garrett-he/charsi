@@ -51,6 +51,38 @@ def test_stringtable_find(presence_states: Path):
     assert str(e.value) == 'nonExists'
 
 
+def test_stringtable_findall(presence_states):
+    tbl = StringTable()
+    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+
+    sl = tbl.findall('presenceMenus, presenceA1Normal~presenceA5Hell')
+
+    assert len(sl) == 16
+    assert sl[0]['Key'] == 'presenceMenus'
+    assert sl[1]['Key'] == 'presenceA1Normal'
+    assert sl[6]['Key'] == 'presenceA1Nightmare'
+    assert sl[11]['Key'] == 'presenceA1Hell'
+    assert sl[15]['Key'] == 'presenceA5Hell'
+
+    with pytest.raises(IndexError) as e:
+        tbl.findall('notExists1~notExists2')
+
+    assert str(e.value) == 'notExists1~notExists2'
+
+    sl = tbl.findall('presenceMenus')
+    assert len(sl) == 1
+    assert sl[0]['Key'] == 'presenceMenus'
+
+    with pytest.raises(LookupError) as e:
+        tbl.findall('nonExists')
+
+    assert str(e.value) == 'nonExists'
+
+    with pytest.raises(IndexError) as e:
+        tbl.findall('presenceA5Hell~presenceA1Normal')
+    assert str(e.value) == 'presenceA5Hell~presenceA1Normal'
+
+
 def test_stringtable_dump(presence_states: Path):
     tbl = StringTable()
     tbl.read(presence_states.open('r', encoding='utf-8-sig'))

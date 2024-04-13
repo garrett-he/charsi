@@ -53,6 +53,6 @@ def test_cli_make_command(cli_runner: click.testing.CliRunner, presence_states: 
         else:
             assert s[tag] == old[tag]
 
-    s = tbl.find('presenceA1Normal')
-    for tag in LanguageTag.tags():
-        assert s[tag] == 'Replaced_presenceA1Normal'
+    for s in tbl.findall('presenceA1Normal~presenceA5Hell'):
+        for tag in LanguageTag.tags():
+            assert s[tag] == 'Replaced'

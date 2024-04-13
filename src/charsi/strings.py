@@ -1,6 +1,8 @@
 from __future__ import annotations
 import json
+import re
 from enum import Enum
+from functools import reduce
 from typing import List, Dict, TypedDict, IO
 
 
@@ -71,6 +73,25 @@ class StringTable:
             raise IndexError(key)
 
         return self.items[self._item_indices[key]]
+
+    def findall(self, query: str) -> List[dict]:
+        if query.find(',') > -1:
+            return reduce(lambda v, sl: v + sl, [self.findall(q.strip()) for q in query.split(',')], [])
+
+        m = re.match(r'^\s*([\w\s]+)\s*~\s*([\w\s]+)\s*$', query)
+
+        if not m:
+            return [self.find(query)]
+
+        if (m.group(1) not in self._item_indices) or (m.group(2) not in self._item_indices):
+            raise IndexError(query)
+
+        start_index = self._item_indices[m.group(1)]
+        end_index = self._item_indices[m.group(2)] + 1
+        if start_index > end_index:
+            raise IndexError(query)
+
+        return self.items[start_index:end_index]
 
     def dump(self, fp: IO):
         json.dump(self.items, fp, ensure_ascii=False, indent=2)

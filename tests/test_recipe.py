@@ -16,9 +16,9 @@ def test_recipe_read():
     assert recipe.instructions[0].args[0] == 'Replaced_presenceMenus'
 
     assert recipe.instructions[1].name == 'Text'
-    assert recipe.instructions[1].query == 'presenceA1Normal'
+    assert recipe.instructions[1].query == 'presenceA1Normal~presenceA5Hell'
     assert len(recipe.instructions[1].args) == 1
-    assert recipe.instructions[1].args[0] == 'Replaced_presenceA1Normal'
+    assert recipe.instructions[1].args[0] == 'Replaced'
 
 
 def test_recipe_build(presence_states: Path):
@@ -39,6 +39,6 @@ def test_recipe_build(presence_states: Path):
         else:
             assert new[lang] == old[lang]
 
-    new = tbl.find('presenceA1Normal')
-    for lang in LanguageTag.tags():
-        assert new[lang] == 'Replaced_presenceA1Normal'
+    for item in tbl.findall('presenceA1Normal~presenceA5Hell'):
+        for lang in LanguageTag.tags():
+            assert item[lang] == 'Replaced'

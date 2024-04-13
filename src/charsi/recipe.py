@@ -17,5 +17,5 @@ class Recipe:
         for inst in self.instructions:
             langs = LanguageTag.tags() if inst.lang is None else [inst.lang]
 
-            s = tbl.find(inst.query)
-            s.update({lang: invoker.invoke(inst, s[lang]) for lang in langs})
+            for s in tbl.findall(inst.query):
+                s.update({lang: invoker.invoke(inst, s[lang]) for lang in langs})
