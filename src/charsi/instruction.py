@@ -83,5 +83,25 @@ def replace_text_handler(_, *args):
     return args[0].replace('\\n', '\n')
 
 
+COLOR_CODES = {
+    'WHITE': 'ÿc0',
+    'RED': 'ÿc1',
+    'LIGHTGREEN': 'ÿc2',
+    'BLUE': 'ÿc3',
+    'GOLD': 'ÿc4',
+    'GRAY': 'ÿc5',
+    'BLACK': 'ÿc6',
+    'LIGHTGOLD': 'ÿc7',
+    'ORANGE': 'ÿc8',
+    'YELLOW': 'ÿc9',
+    'PURPLE': 'ÿc;'
+}
+
+
+def color_handler(text, *args):
+    return f'{COLOR_CODES[args[0].upper()]}{text}'
+
+
 InstructionInvoker.default = InstructionInvoker()
 InstructionInvoker.default.register('Text', replace_text_handler)
+InstructionInvoker.default.register('Color', color_handler)

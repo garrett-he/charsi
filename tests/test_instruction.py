@@ -56,3 +56,7 @@ def test_default_instruction_invoker():
     inst = parse('Text[query]: text-replaced')
     result = invoker.invoke(inst, 'origin-text')
     assert result == 'text-replaced'
+
+    inst = parse('Color[query]: White')
+    result = invoker.invoke(inst, 'origin-text')
+    assert result == 'ÿc0origin-text'
