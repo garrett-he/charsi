@@ -22,7 +22,11 @@ def test_cli(cli_runner: click.testing.CliRunner):
     assert result.output.strip() == importlib.metadata.version('charsi')
 
 
-def test_cli_build(cli_runner: click.testing.CliRunner, presence_states: Path):
+def test_cli_make_command(cli_runner: click.testing.CliRunner, presence_states: Path):
+    tbl = StringTable()
+    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    old = tbl.find('presenceMenus')
+
     recipe_file = importlib.resources.files('tests.res').joinpath('recipe1.recipe')
 
     result = cli_runner.invoke(make_command, ['--table-file', presence_states, '--', recipe_file])
@@ -44,7 +48,10 @@ def test_cli_build(cli_runner: click.testing.CliRunner, presence_states: Path):
 
     s = tbl.find('presenceMenus')
     for tag in LanguageTag.tags():
-        assert s[tag] == 'Replaced_presenceMenus'
+        if tag == 'zhCN':
+            assert s[tag] == 'Replaced_presenceMenus'
+        else:
+            assert s[tag] == old[tag]
 
     s = tbl.find('presenceA1Normal')
     for tag in LanguageTag.tags():

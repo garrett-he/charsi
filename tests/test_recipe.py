@@ -28,11 +28,16 @@ def test_recipe_build(presence_states: Path):
     tbl = StringTable()
     tbl.read(presence_states.open('r', encoding='utf-8-sig'))
 
+    old = tbl.find('presenceMenus')
+
     recipe.build(tbl)
 
     new = tbl.find('presenceMenus')
     for lang in LanguageTag.tags():
-        assert new[lang] == 'Replaced_presenceMenus'
+        if lang == 'zhCN':
+            assert new[lang] == 'Replaced_presenceMenus'
+        else:
+            assert new[lang] == old[lang]
 
     new = tbl.find('presenceA1Normal')
     for lang in LanguageTag.tags():

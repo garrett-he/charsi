@@ -3,9 +3,10 @@ from charsi.instruction import parse, InstructionFormatError, InstructionInvoker
 
 
 def test_instruction_parse():
-    inst = parse('TestInstruction[query]: arg1, arg2, arg3 # comment')
+    inst = parse('TestInstruction[query][lang1]: arg1, arg2, arg3 # comment')
     assert inst.name == 'TestInstruction'
     assert inst.query == 'query'
+    assert inst.lang == 'lang1'
     assert len(inst.args) == 3
     assert inst.args[0] == 'arg1' and inst.args[1] == 'arg2' and inst.args[2] == 'arg3'
 

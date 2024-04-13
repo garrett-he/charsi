@@ -13,10 +13,9 @@ class Recipe:
 
         return self
 
-    def build(self, tbl: StringTable, invoker: InstructionInvoker = None):
-        if invoker is None:
-            invoker = InstructionInvoker.default
-
+    def build(self, tbl: StringTable, invoker: InstructionInvoker = InstructionInvoker.default):
         for inst in self.instructions:
+            langs = LanguageTag.tags() if inst.lang is None else [inst.lang]
+
             s = tbl.find(inst.query)
-            s.update({lang: invoker.invoke(inst, s[lang]) for lang in LanguageTag.tags()})
+            s.update({lang: invoker.invoke(inst, s[lang]) for lang in langs})

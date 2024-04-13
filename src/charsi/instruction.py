@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Optional
 
 from .utils import split_text
 
@@ -12,7 +12,7 @@ def parse(text: str) -> Instruction:
     if len(fds) < 2:
         raise InstructionFormatError(text)
 
-    m = re.match(r'^\s*(\w+)\s*(\[[^]]+])', fds[0])
+    m = re.match(r'^\s*(\w+)\s*(\[[^]]+])\s*(\[[^]]+])?', fds[0])
 
     if not m:
         raise InstructionFormatError(text)
@@ -20,7 +20,8 @@ def parse(text: str) -> Instruction:
     return Instruction(
         name=m.group(1),
         query=m.group(2).strip(' []'),
-        args=[arg.strip() for arg in fds[1].split(',')]
+        args=[arg.strip() for arg in fds[1].split(',')],
+        lang=None if m.group(3) is None else m.group(3).strip(' []')
     )
 
 
@@ -29,6 +30,7 @@ class Instruction:
     name: str
     query: str
     args: List[str]
+    lang: Optional[str] = None
 
 
 class InstructionInvoker:
