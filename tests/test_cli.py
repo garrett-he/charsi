@@ -9,7 +9,7 @@ import click
 
 from charsi.__main__ import cli
 from charsi.strings import StringTable, LanguageTag
-from charsi.commands.imbue import imbue_command
+from charsi.commands.make import make_command
 
 
 def test_cli(cli_runner: click.testing.CliRunner):
@@ -25,7 +25,7 @@ def test_cli(cli_runner: click.testing.CliRunner):
 def test_cli_build(cli_runner: click.testing.CliRunner, presence_states: Path):
     recipe_file = importlib.resources.files('tests.res').joinpath('recipe1.recipe')
 
-    result = cli_runner.invoke(imbue_command, ['--table-file', presence_states, '--', recipe_file])
+    result = cli_runner.invoke(make_command, ['--table-file', presence_states, '--', recipe_file])
 
     if result.exception:
         print(result.output)
