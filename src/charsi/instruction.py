@@ -4,6 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Dict, Callable, Optional
 
+from lupa import LuaRuntime
 from .utils import split_text
 
 
@@ -35,11 +36,19 @@ class Instruction:
 
 class InstructionInvoker:
     _handlers: Dict[str, Callable]
+    _lua: LuaRuntime
 
     default: InstructionInvoker
 
     def __init__(self):
         self._handlers = {}
+        self._lua = LuaRuntime(unpack_returned_tuples=True, register_builtins=False)
+
+        lua_globals = self._lua.globals()
+        lua_globals['python'] = None
+        lua_globals['RegisterInstruction'] = self.register
+        lua_globals['UnregisterInstruction'] = self.unregister
+        lua_globals['InstructionRegistered'] = self.is_registered
 
     def register(self, name: str, handler: Callable):
         if name in self._handlers:
@@ -61,6 +70,9 @@ class InstructionInvoker:
             raise InstructionUndefinedError(inst.name)
 
         return self._handlers[inst.name](text, *inst.args)
+
+    def load_lua(self, codes: str):
+        self._lua.execute(codes)
 
 
 class _InstructionError(Exception):

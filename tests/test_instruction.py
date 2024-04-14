@@ -1,5 +1,8 @@
+import importlib.resources
+
 import pytest
-from charsi.instruction import parse, InstructionFormatError, InstructionInvoker, InstructionConflictError, InstructionUndefinedError
+from charsi.instruction import parse, InstructionFormatError, InstructionInvoker, InstructionConflictError, \
+    InstructionUndefinedError
 
 
 def test_instruction_parse():
@@ -60,3 +63,11 @@ def test_default_instruction_invoker():
     inst = parse('Color[query]: White')
     result = invoker.invoke(inst, 'origin-text')
     assert result == 'ÿc0origin-text'
+
+
+def test_instruction_invoker_lua():
+    invoker = InstructionInvoker()
+    invoker.load_lua(importlib.resources.files('tests.res').joinpath('test.lua').read_text())
+
+    inst = parse('LuaInstruction[test]: target-text')
+    assert invoker.invoke(inst, 'origin-text') == 'LuaInstruction:origin-text:target-text'
