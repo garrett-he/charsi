@@ -1,11 +1,11 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/he-yaowen/charsi/main/logo/charsi.png"/>
+    <img src="https://raw.githubusercontent.com/garrett-he/charsi/main/docs/images/logo.png"/>
 </div>
 
-![License](https://img.shields.io/github/license/he-yaowen/charsi)
-![Python Versions](https://img.shields.io/pypi/pyversions/charsi)
-![PyPI Version](https://img.shields.io/pypi/v/charsi)
-![Unit Test](https://img.shields.io/github/actions/workflow/status/he-yaowen/charsi/unit-test.yml)
+![license](https://img.shields.io/github/license/garrett-he/charsi)
+![python](https://img.shields.io/pypi/pyversions/charsi)
+![pypi](https://img.shields.io/pypi/v/charsi)
+![build](https://img.shields.io/github/actions/workflow/status/garrett-he/charsi/unit-test.yml)
 
 # Charsi
 
@@ -19,11 +19,12 @@ In the classic version of Diablo II, there was a very famous hacking tool called
 Diablo II: Resurrected, you can directly modify the JSON files to change texts
 in game, but the workload is high, and it's easy to make mistakes.
 
-[Charsi][3] is the blacksmith in the Rogue Encampment in Act I of Diablo II, and
-can imbue any normal item of the player's choice.
+![charsi-icon](./docs/images/charsi-icon.png) [Charsi][3] is the blacksmith in
+the Rogue Encampment in Act I of Diablo II, and can imbue any normal item of the
+player's choice.
 
-This tool named charsi, can imbue game strings with your recipes which are in a
-format similar to Maphack configurations.
+This tool named **charsi**, can imbue game strings with your recipes which are
+in a format similar to Maphack configurations.
 
 ## License
 
