@@ -3,9 +3,11 @@
 </div>
 
 ![license](https://img.shields.io/github/license/garrett-he/charsi)
+![build](https://img.shields.io/github/actions/workflow/status/garrett-he/charsi/ubuntu-jammy.yml)
+![codecov](https://img.shields.io/codecov/c/github/garrett-he/charsi)
+![version](https://img.shields.io/pypi/v/charsi)
 ![python](https://img.shields.io/pypi/pyversions/charsi)
-![pypi](https://img.shields.io/pypi/v/charsi)
-![build](https://img.shields.io/github/actions/workflow/status/garrett-he/charsi/unit-test.yml)
+![downloads](https://img.shields.io/pypi/dm/charsi)
 
 # Charsi
 
