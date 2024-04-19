@@ -1,13 +1,12 @@
-import importlib.resources
 from pathlib import Path
 
 from charsi.recipe import Recipe
 from charsi.strings import StringTable, LanguageTag
 
 
-def test_recipe_read():
+def test_recipe_read(path_recipe1_recipe: Path):
     recipe = Recipe()
-    recipe.read(importlib.resources.files('tests.res').joinpath('recipe1.recipe').open('r', encoding='utf-8'))
+    recipe.read(path_recipe1_recipe.open('r', encoding='utf-8'))
 
     assert len(recipe.instructions) == 2
     assert recipe.instructions[0].name == 'Text'
@@ -21,12 +20,12 @@ def test_recipe_read():
     assert recipe.instructions[1].args[0] == 'Replaced'
 
 
-def test_recipe_build(presence_states: Path):
+def test_recipe_build(path_presence_states_json: Path, path_recipe1_recipe: Path):
     recipe = Recipe()
-    recipe.read(importlib.resources.files('tests.res').joinpath('recipe1.recipe').open('r', encoding='utf-8'))
+    recipe.read(path_recipe1_recipe.open('r', encoding='utf-8'))
 
     tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     old = tbl.find('presenceMenus').copy()
 
@@ -44,12 +43,12 @@ def test_recipe_build(presence_states: Path):
             assert item[lang] == 'Replaced'
 
 
-def test_recipe_tag(presence_states: Path):
+def test_recipe_tag(path_presence_states_json: Path, path_recipe2_recipe: Path):
     recipe = Recipe()
-    recipe.read(importlib.resources.files('tests.res').joinpath('recipe2.recipe').open('r', encoding='utf-8'))
+    recipe.read(path_recipe2_recipe.open('r', encoding='utf-8'))
 
     tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     old1 = tbl.find('presenceMenus').copy()
     old2 = tbl.find('presenceA1Normal').copy()

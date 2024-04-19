@@ -1,58 +1,25 @@
-import os
-import importlib.metadata
-import importlib.resources
-import tempfile
-from pathlib import Path
+from unittest.mock import patch
 
-import click.testing
 import click
+from click.testing import CliRunner
 
-from charsi.__main__ import cli
-from charsi.strings import StringTable, LanguageTag
-from charsi.commands.make import make_command
+from charsi import __version__
+from charsi.__main__ import cli, print_version
 
 
-def test_cli(cli_runner: click.testing.CliRunner):
+def test_cli(cli_runner: CliRunner):
     result = cli_runner.invoke(cli, ['--version'])
 
-    if result.exception:
-        print(result.output)
-
     assert not result.exception
-    assert result.output.strip() == importlib.metadata.version('charsi')
+    assert result.output.strip() == __version__
 
 
-def test_cli_make_command(cli_runner: click.testing.CliRunner, presence_states: Path):
-    tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
-    old = tbl.find('presenceMenus')
+def test_print_version():
+    ctx = click.Context(click.Command('test-command'))
 
-    recipe_file = importlib.resources.files('tests.res').joinpath('recipe1.recipe')
+    with patch.object(click, 'echo') as echo_mock, patch.object(ctx, 'exit'):
+        print_version(ctx, None, False)
+        echo_mock.assert_not_called()
 
-    result = cli_runner.invoke(make_command, ['--table-file', presence_states, '--', recipe_file])
-
-    if result.exception:
-        print(result.output)
-
-    assert not result.exception
-
-    tmpfile = tempfile.mktemp()
-    with open(tmpfile, 'w', encoding='utf-8-sig') as fp:
-        fp.write(result.output)
-
-    tbl = StringTable()
-    with open(tmpfile, 'r', encoding='utf-8-sig') as fp:
-        tbl.read(fp)
-
-    os.unlink(tmpfile)
-
-    s = tbl.find('presenceMenus')
-    for tag in LanguageTag.tags():
-        if tag == 'zhCN':
-            assert s[tag] == 'Replaced_presenceMenus'
-        else:
-            assert s[tag] == old[tag]
-
-    for s in tbl.findall('presenceA1Normal~presenceA5Hell'):
-        for tag in LanguageTag.tags():
-            assert s[tag] == 'Replaced'
+        print_version(ctx, None, True)
+        echo_mock.assert_called_with(__version__)

@@ -12,10 +12,7 @@ from charsi.recipe import Recipe
 def imbue_command(target_dir: PathLike):
     """Build recipes by conventions under current directory."""
 
-    target_dir = target_dir is None and target_dir or getenv('CHARSI_TARGET_DIR')
-
-    if target_dir is None:
-        raise NotADirectoryError('Target directory not specified.')
+    target_dir = target_dir if target_dir is not None else getenv('CHARSI_TARGET_DIR')
 
     for recipe_file in glob(path.join(getcwd(), '**/*.recipe'), recursive=True):
         tbl_file = path.join(target_dir, 'local/lng/strings', f'{path.basename(recipe_file).split(".")[0]}.json')

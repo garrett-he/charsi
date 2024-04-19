@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Dict, Callable, Optional
 
-from lupa import LuaRuntime
+from lupa import LuaRuntime  # pylint: disable=no-name-in-module
 from .utils import split_text
 
 

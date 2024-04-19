@@ -18,5 +18,5 @@ def cli():
     """A command-line tool to help game modders build string resources for Diablo II: Resurrected."""
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     cli()

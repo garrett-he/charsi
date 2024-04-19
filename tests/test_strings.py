@@ -3,16 +3,21 @@ import tempfile
 from pathlib import Path
 
 import pytest
-from charsi.strings import StringTable
+from charsi.strings import LanguageTag, StringTable
 
 
-def test_stringtable_read_and_write(presence_states: Path):
+def test_language_tag():
+    assert LanguageTag.tags() == ['enUS', 'zhTW', 'deDE', 'esES', 'frFR', 'itIT', 'koKR', 'plPL', 'esMX', 'jaJP',
+                                  'ptBR', 'ruRU', 'zhCN']
+
+
+def test_stringtable_read_and_write(path_presence_states_json: Path):
     tbl = StringTable()
     items = tbl.items
 
     assert len(items) == 0
 
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     assert items == tbl.items
     assert len(items) == 16
@@ -38,22 +43,22 @@ def test_stringtable_read_and_write(presence_states: Path):
     os.unlink(tmpfile)
 
 
-def test_stringtable_find(presence_states: Path):
+def test_stringtable_find(path_presence_states_json: Path):
     tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     item = tbl.find('presenceMenus')
     assert item['id'] == 26047 and item['Key'] == 'presenceMenus'
 
-    with pytest.raises(IndexError) as e:
+    with pytest.raises(IndexError) as exc:
         tbl.find('nonExists')
 
-    assert str(e.value) == 'nonExists'
+    assert str(exc.value) == 'nonExists'
 
 
-def test_stringtable_findall(presence_states):
+def test_stringtable_findall(path_presence_states_json):
     tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     sl = tbl.findall('presenceMenus, presenceA1Normal~presenceA5Hell')
 
@@ -64,28 +69,28 @@ def test_stringtable_findall(presence_states):
     assert sl[11]['Key'] == 'presenceA1Hell'
     assert sl[15]['Key'] == 'presenceA5Hell'
 
-    with pytest.raises(IndexError) as e:
+    with pytest.raises(IndexError) as exc:
         tbl.findall('notExists1~notExists2')
 
-    assert str(e.value) == 'notExists1~notExists2'
+    assert str(exc.value) == 'notExists1~notExists2'
 
     sl = tbl.findall('presenceMenus')
     assert len(sl) == 1
     assert sl[0]['Key'] == 'presenceMenus'
 
-    with pytest.raises(LookupError) as e:
+    with pytest.raises(LookupError) as exc:
         tbl.findall('nonExists')
 
-    assert str(e.value) == 'nonExists'
+    assert str(exc.value) == 'nonExists'
 
-    with pytest.raises(IndexError) as e:
+    with pytest.raises(IndexError) as exc:
         tbl.findall('presenceA5Hell~presenceA1Normal')
-    assert str(e.value) == 'presenceA5Hell~presenceA1Normal'
+    assert str(exc.value) == 'presenceA5Hell~presenceA1Normal'
 
 
-def test_stringtable_dump(presence_states: Path):
+def test_stringtable_dump(path_presence_states_json: Path):
     tbl = StringTable()
-    tbl.read(presence_states.open('r', encoding='utf-8-sig'))
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
 
     tmpfile = tempfile.mktemp()
 
