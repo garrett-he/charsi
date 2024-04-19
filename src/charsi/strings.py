@@ -48,10 +48,12 @@ class StringItem(TypedDict):
 class StringTable:
     items: List[StringItem]
     _item_indices: Dict[str, int]
+    _alias: Dict[str, str]
 
     def __init__(self):
         self.items = []
         self._item_indices = {}
+        self._alias = {}
 
     def read(self, fp: IO) -> StringTable:
         self.items.clear()
@@ -60,6 +62,7 @@ class StringTable:
             self.items.append(item)
 
         self._item_indices = {self.items[i]['Key']: i for i in range(0, len(self.items))}
+        self._alias = {}
 
         return self
 
@@ -81,6 +84,9 @@ class StringTable:
         m = re.match(r'^\s*([\w\s]+)\s*~\s*([\w\s]+)\s*$', query)
 
         if not m:
+            if query in self._alias:
+                return self.findall(self._alias[query])
+
             return [self.find(query)]
 
         if (m.group(1) not in self._item_indices) or (m.group(2) not in self._item_indices):
@@ -95,3 +101,6 @@ class StringTable:
 
     def dump(self, fp: IO):
         json.dump(self.items, fp, ensure_ascii=False, indent=2)
+
+    def set_alias(self, table: Dict[str, str]):
+        self._alias = table

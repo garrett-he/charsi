@@ -104,3 +104,17 @@ def test_stringtable_dump(path_presence_states_json: Path):
     assert len(tbl.items) == 16
     assert tbl.items[0]['id'] == 26047
     assert tbl.items[0]['Key'] == 'presenceMenus'
+
+
+def test_findall_by_alias(path_presence_states_json: Path):
+    tbl = StringTable()
+    tbl.read(path_presence_states_json.open('r', encoding='utf-8-sig'))
+
+    tbl.set_alias({
+        'presenceNormal': 'presenceA1Normal~presenceA5Normal'
+    })
+
+    sl = tbl.findall('presenceNormal')
+    assert len(sl) == 5
+    assert sl[0]['Key'] == 'presenceA1Normal'
+    assert sl[4]['Key'] == 'presenceA5Normal'
