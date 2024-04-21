@@ -1,0 +1,9 @@
+Color[Perfect Gems]: Red
+Color[Flawless Gems]: Red
+Color[rvl]: Purple
+
+Text[Exceptional Items]: {origin}+
+Text[Elite Items]: {origin}++
+
+Text[Unique Items]: {origin}\n{prop-varies}
+Text[Set Items]: {origin}\n{prop-varies}
